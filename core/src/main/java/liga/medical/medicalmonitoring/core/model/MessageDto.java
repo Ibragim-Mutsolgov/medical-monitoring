@@ -6,4 +6,6 @@ import lombok.Data;
 public class MessageDto {
 
     private Status status;
+
+    private String content;
 }
