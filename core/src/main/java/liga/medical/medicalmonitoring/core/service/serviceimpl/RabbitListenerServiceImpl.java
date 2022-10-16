@@ -26,16 +26,14 @@ public class RabbitListenerServiceImpl implements RabbitListenerService {
         Status status = dto.getStatus();
         switch (status) {
             case daily:
-                service.sendMessage(dto, NamesForQueue.ROUTER_QUEUE_DAILY);
+                service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_DAILY);
                 break;
             case alert:
-                service.sendMessage(dto, NamesForQueue.ROUTER_QUEUE_ALERT);
+                service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_ALERT);
                 break;
             case error:
-                service.sendMessage(dto, NamesForQueue.ROUTER_QUEUE_ERROR);
+                service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_ERROR);
                 break;
-            default:
-                log.info("Не удается распознать к какому типу относиться сообщение");
         }
     }
 }
