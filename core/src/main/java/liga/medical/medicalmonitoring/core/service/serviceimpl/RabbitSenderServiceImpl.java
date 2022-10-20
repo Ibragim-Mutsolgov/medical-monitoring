@@ -16,6 +16,6 @@ public class RabbitSenderServiceImpl implements RabbitSenderService {
     @Override
     public void sendMessage(String message, String queue) {
         template.convertAndSend(queue, message);
-        log.info("Сообщение " + message + " отправлено в очередь " + queue);
+        log.info("Message " + message + " sent to the queue " + queue);
     }
 }

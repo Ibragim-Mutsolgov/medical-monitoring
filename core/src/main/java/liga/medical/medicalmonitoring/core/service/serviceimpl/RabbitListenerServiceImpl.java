@@ -8,10 +8,8 @@ import liga.medical.medicalmonitoring.core.model.Status;
 import liga.medical.medicalmonitoring.core.service.RabbitListenerService;
 import liga.medical.medicalmonitoring.core.service.RabbitSenderService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class RabbitListenerServiceImpl implements RabbitListenerService {
@@ -24,16 +22,11 @@ public class RabbitListenerServiceImpl implements RabbitListenerService {
     public void routeMessage(String message) throws JsonProcessingException {
         MessageDto dto = mapper.readValue(message, MessageDto.class);
         Status status = dto.getStatus();
-        switch (status) {
-            case daily:
-                service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_DAILY);
-                break;
-            case alert:
-                service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_ALERT);
-                break;
-            case error:
-                service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_ERROR);
-                break;
-        }
+        if (status.name().equals("daily"))
+            service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_DAILY);
+        if (status.name().equals("alert"))
+            service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_ALERT);
+        if (status.name().equals("error"))
+            service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_ERROR);
     }
 }

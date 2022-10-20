@@ -17,7 +17,7 @@ public class RabbitMessageListener {
 
     @RabbitListener(queues = NamesForQueue.ROUTER_QUEUE_NAME)
     public void getAndSendMessage(String message) throws JsonProcessingException {
-        log.info("Сообщение " + message + " получено");
+        log.info("The message " + message + " is received");
         service.routeMessage(message);
     }
 }
