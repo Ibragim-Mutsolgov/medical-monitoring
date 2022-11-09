@@ -2,9 +2,9 @@ package liga.medical.medicalmonitoring.core.service.serviceimpl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import liga.medical.medicalmonitoring.core.model.MessageDto;
-import liga.medical.medicalmonitoring.core.model.NamesForQueue;
-import liga.medical.medicalmonitoring.core.model.Status;
+import liga.medical.medicalmonitoring.core.dto.RabbitMessageDto;
+import liga.medical.medicalmonitoring.core.dto.NamesForQueue;
+import liga.medical.medicalmonitoring.core.dto.Type;
 import liga.medical.medicalmonitoring.core.service.RabbitListenerService;
 import liga.medical.medicalmonitoring.core.service.RabbitSenderService;
 import lombok.AllArgsConstructor;
@@ -20,13 +20,14 @@ public class RabbitListenerServiceImpl implements RabbitListenerService {
 
     @Override
     public void routeMessage(String message) throws JsonProcessingException {
-        MessageDto dto = mapper.readValue(message, MessageDto.class);
-        Status status = dto.getStatus();
-        if (status.name().equals("daily"))
+        RabbitMessageDto dto = mapper.readValue(message, RabbitMessageDto.class);
+        Type type = dto.getType();
+        if (type.name().equals("DAILY"))
             service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_DAILY);
-        if (status.name().equals("alert"))
+        if (type.name().equals("ALERT"))
             service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_ALERT);
-        if (status.name().equals("error"))
+        if (type.name().equals("ERROR"))
+            // Надо отправить в лог common-module в таблицу exception
             service.sendMessage(message, NamesForQueue.ROUTER_QUEUE_ERROR);
     }
 }

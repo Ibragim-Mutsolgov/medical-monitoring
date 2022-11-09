@@ -2,9 +2,9 @@ package liga.medical.medicalmonitoring.core.service.serviceimpl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import liga.medical.medicalmonitoring.core.model.MessageDto;
-import liga.medical.medicalmonitoring.core.model.NamesForQueue;
-import liga.medical.medicalmonitoring.core.model.Status;
+import liga.medical.medicalmonitoring.core.dto.RabbitMessageDto;
+import liga.medical.medicalmonitoring.core.dto.NamesForQueue;
+import liga.medical.medicalmonitoring.core.dto.Type;
 import liga.medical.medicalmonitoring.core.service.RabbitListenerService;
 import liga.medical.medicalmonitoring.core.service.RabbitSenderService;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,20 +25,20 @@ class RabbitListenerServiceImplTest {
 
     private ObjectMapper mapper;
 
-    private MessageDto dto;
+    private RabbitMessageDto dto;
 
     @BeforeEach
     void setUp() {
         mapper = new ObjectMapper();
         listenerService = new RabbitListenerServiceImpl(mapper, senderService);
-        dto = new MessageDto();
+        dto = new RabbitMessageDto();
         dto.setContent("Content");
     }
 
     @Test
     void routeMessageWithAlert() throws JsonProcessingException {
         // given
-        dto.setStatus(Status.alert);
+        dto.setType(Type.ALERT);
         String message = mapper.writeValueAsString(dto);
 
         // when
@@ -51,7 +51,7 @@ class RabbitListenerServiceImplTest {
     @Test
     void routeMessageWithDaily() throws JsonProcessingException {
         // given
-        dto.setStatus(Status.daily);
+        dto.setType(Type.DAILY);
         String message = mapper.writeValueAsString(dto);
 
         // when
@@ -64,7 +64,7 @@ class RabbitListenerServiceImplTest {
     @Test
     void routeMessageWithError() throws JsonProcessingException {
         // given
-        dto.setStatus(Status.error);
+        dto.setType(Type.ERROR);
         String message = mapper.writeValueAsString(dto);
 
         // when

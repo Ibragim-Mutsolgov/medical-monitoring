@@ -1,4 +1,4 @@
-package liga.medical.medicalmonitoring.core.model;
+package liga.medical.medicalmonitoring.core.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageDto {
+public class RabbitMessageDto {
 
-    private Status status;
+    private Long id;
+
+    private Type type;
 
     private String content;
 }
